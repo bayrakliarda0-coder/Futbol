@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Futbol</title>
+<style>
+body{font-family:sans-serif;margin:0;padding:16px;background:#e8eee9;color:#14231a}
+h1,h2{margin:8px 0}
+.tabs{text-align:center}
+.tabs button{padding:10px 18px;margin:0 4px;border-radius:20px;border:1px solid #888;background:white;font-size:16px}
+.tabs button.sec{background:#14231a;color:white}
+#saha{position:relative;width:100%;max-width:360px;height:520px;margin:14px auto;border-radius:10px;border:3px solid white;background:repeating-linear-gradient(#2f7d46 0 52px,#2a7340 52px 104px)}
+.cizgi{position:absolute;left:0;right:0;top:50%;border-top:2px solid white}
+.o{position:absolute;transform:translate(-50%,-50%);width:46px;height:46px;border-radius:50%;border:2px solid white;background:#143d24;color:white;font-weight:bold;font-size:13px;padding:0}
+.o.sec{background:#ffd23f;color:black}
+#bilgi{background:white;border-radius:10px;padding:14px;max-width:360px;margin:0 auto}
+ul{padding-left:20px;max-width:600px}
+li{margin-bottom:10px}
+</style>
+</head>
+<body>
+<h1>Futbol: diziliş ve tarih</h1>
+<div class="tabs" id="tabs"></div>
+<div id="saha"><div class="cizgi"></div></div>
+<div id="bilgi">Bir mevkiye bas.</div>
+
+<h2>Futbolun tarihi</h2>
+<ul>
+<li><b>MÖ 2. yüzyıl civarı:</b> Çin’de “cuju” oynanır, en eski benzer oyunlardan biri sayılır.</li>
+<li><b>Orta Çağ:</b> İngiltere’de köyler arası kuralsız top oyunları oynanır.</li>
+<li><b>1863:</b> Londra’da Football Association kurulur, ilk ortak kurallar yazılır.</li>
+<li><b>1872:</b> İskoçya ile İngiltere arasında ilk resmî milli maç 0-0 biter.</li>
+<li><b>1888:</b> İngiltere’de ilk profesyonel lig başlar.</li>
+<li><b>1903-1907:</b> İstanbul’da Beşiktaş, Galatasaray ve Fenerbahçe kurulur.</li>
+<li><b>1904:</b> FIFA, Paris’te kurulur.</li>
+<li><b>1930:</b> İlk Dünya Kupası Uruguay’da oynanır.</li>
+<li><b>1959:</b> Türkiye’de ilk ulusal lig başlar.</li>
+<li><b>2002:</b> Türkiye Dünya Kupası’nda üçüncü olur.</li>
+</ul>
+
+<script>
+var G={
+kl:["KL","Kaleci","Kaleyi korur, şutları ve ortaları çıkarır, savunmayı yönlendirir."],
+stp:["STP","Stoper","Rakip forvetin önünde durur, pas ve şutları keser, havadaki toplarda baskın olur."],
+bek:["BEK","Bek","Kendi kanadını savunur, hücumda kenardan ileri çıkıp orta yapar."],
+dos:["DOS","Defansif orta saha","Savunmanın önünde kalkan olur, rakip ataklarını erkenden keser."],
+oos:["OOS","Merkez orta saha","Hem savunmaya hem hücuma yardım eder, oyunu paslarla bağlar."],
+ko:["KO","Kenar orta saha","Kenardan orta açar ya da içeri kat eder, bekine yardım eder."],
+knt:["KNT","Kanat oyuncusu","Bire birde bekini geçmeye çalışır, orta yapar ya da şut atar."],
+sf:["SF","Santrfor","Ceza sahasında pozisyon alır ve golü bitirir, rakip savunmayı meşgul eder."]
+};
+var D={
+"4-3-3":[["kl",50,90],["bek",14,72],["stp",37,77],["stp",63,77],["bek",86,72],["dos",50,60],["oos",28,47],["oos",72,47],["knt",16,22],["sf",50,16],["knt",84,22]],
+"4-4-2":[["kl",50,90],["bek",14,72],["stp",37,77],["stp",63,77],["bek",86,72],["ko",13,50],["oos",38,55],["oos",62,55],["ko",87,50],["sf",38,22],["sf",62,22]]
+};
+function ciz(ad){
+  var s=document.getElementById('saha');
+  s.querySelectorAll('.o').forEach(function(x){x.remove()});
+  D[ad].forEach(function(p){
+    var b=document.createElement('button');
+    b.className='o';
+    b.textContent=G[p[0]][0];
+    b.style.left=p[1]+'%';
+    b.style.top=p[2]+'%';
+    b.onclick=function(){
+      s.querySelectorAll('.o').forEach(function(x){x.classList.remove('sec')});
+      b.classList.add('sec');
+      document.getElementById('bilgi').innerHTML='<b>'+G[p[0]][1]+'</b><br>'+G[p[0]][2];
+    };
+    s.appendChild(b);
+  });
+  document.getElementById('bilgi').textContent='Bir mevkiye bas.';
+  document.querySelectorAll('#tabs button').forEach(function(x){
+    x.className=(x.textContent==ad)?'sec':'';
+  });
+}
+Object.keys(D).forEach(function(n){
+  var t=document.createElement('button');
+  t.textContent=n;
+  t.onclick=function(){ciz(n)};
+  document.getElementById('tabs').appendChild(t);
+});
+ciz('4-3-3');
+</script>
+</body>
+</html>
